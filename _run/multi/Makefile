@@ -13,20 +13,22 @@ helm-check-nodes:   $(patsubst %,helm-check-node-%,$(NODES))
 helm-delete-nodes:  $(patsubst %,helm-delete-node-%,$(NODES))
 helm-reset-nodes:   helm-delete-nodes helm-install-nodes
 
+DOMAIN ?= $(shell minikube ip).nip.io
+
 helm-install-node-%:
-	helm install "$(NODE_CHART)"                         \
-		-n "$(@:helm-install-node-%=%)"                    \
-		--set "ingress.domain=$(shell minikube ip).nip.io" \
+	helm install "$(NODE_CHART)"        \
+		-n "$(@:helm-install-node-%=%)"   \
+		--set "ingress.domain=$(DOMAIN)"  \
 		-f "$(NODE_ROOT)/$(@:helm-install-node-%=%).yaml"
 
 helm-upgrade-node-%:
 	helm upgrade "$(@:helm-upgrade-node-%=%)" "$(NODE_CHART)" \
 		--recreate-pods                                         \
-		--set "ingress.domain=$(shell minikube ip).nip.io"      \
+		--set "ingress.domain=$(DOMAIN)"                        \
 		-f "$(NODE_ROOT)/$(@:helm-upgrade-node-%=%).yaml"
 
 helm-check-node-%:
-	curl "$(@:helm-check-node-%=%).$(shell minikube ip).nip.io/status"
+	curl "$(@:helm-check-node-%=%).$(DOMAIN)"
 	@echo
 
 helm-delete-node-%:
@@ -39,19 +41,19 @@ helm-delete-providers:  $(patsubst %,helm-delete-provider-%,$(PROVIDERS))
 helm-reset-providers:   helm-delete-providers helm-install-providers
 
 helm-install-provider-%:
-	helm install "$(PROVIDER_CHART)"                     \
-		-n "$(@:helm-install-provider-%=%)"                \
-		--set "ingress.domain=$(shell minikube ip).nip.io" \
+	helm install "$(PROVIDER_CHART)"      \
+		-n "$(@:helm-install-provider-%=%)" \
+		--set "ingress.domain=$(DOMAIN)"    \
 		--set "provider.region=$(shell echo "$@" | sed -e 's/.*-\(.*-.*\)-[0-9][0-9]*/\1/')"
 
 helm-upgrade-provider-%:
 	helm upgrade "$(@:helm-upgrade-provider-%=%)" "$(PROVIDER_CHART)" \
 		--recreate-pods                                                 \
-		--set "ingress.domain=$(shell minikube ip).nip.io"              \
+		--set "ingress.domain=$(DOMAIN)"                                \
 		--set "provider.region=$(shell echo "$@" | sed -e 's/.*-\(.*-.*\)-[0-9][0-9]*/\1/')"
 
 helm-delete-provider-%:
 	helm delete "$(@:helm-delete-provider-%=%)" --purge
 
 helm-check-provider-%:
-	curl "$(@:helm-check-provider-%=%).$(shell minikube ip).nip.io/status"
+	curl "$(@:helm-check-provider-%=%).$(DOMAIN)"

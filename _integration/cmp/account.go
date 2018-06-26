@@ -11,14 +11,14 @@ import (
 func accountBalance(key key, amount int64) gestalt.Component {
 	parse := js.Do(js.Int(amount, "balance"))
 
-	return akash("account-balance",
+	return akash_n("account-balance",
 		"query", "account", key.addr.Var()).
 		FN(parse).
 		WithMeta(g.Require(key.addr.Name()))
 }
 
 func accountSendTo(from key, to key, amount int64) gestalt.Component {
-	return akash("send-to",
+	return akash_n("send-to",
 		"send", strconv.FormatInt(amount, 10), to.addr.Var(), "-k", from.name.Name()).
 		WithMeta(g.Require(to.addr.Name()))
 }

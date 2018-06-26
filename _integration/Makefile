@@ -9,7 +9,7 @@ init:
 	mkdir -p $(DIRS)
 
 run: build init
-	./run eval
+	./run standalone eval
 
 akash:
 	(cd .. && make)

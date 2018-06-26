@@ -1,8 +1,5 @@
 AKASH_ROOT := ../..
 
-AKASH  := $(AKASH)/akash
-AKASHD := $(AKASHD)/akashd
-
 DATA_ROOT = data
 NODE_ROOT = $(DATA_ROOT)/node
 

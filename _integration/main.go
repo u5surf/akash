@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/ovrclk/akash/_integration/cmp"
@@ -10,20 +11,56 @@ import (
 )
 
 func main() {
-	m := detectDefaults()
 
-	suite := cmp.Suite()
+	if len(os.Args) < 2 {
+		usage()
+	}
 
-	gestalt.RunWith(suite.WithMeta(m), os.Args[1:])
+	var (
+		suite    gestalt.Component
+		defaults vars.Meta
+	)
+
+	switch os.Args[1] {
+	case "standalone":
+		suite, defaults = prepareStandalone()
+	case "kube":
+		suite, defaults = prepareKube()
+	default:
+		usage()
+	}
+
+	gestalt.RunWith(suite.WithMeta(defaults), os.Args[2:])
 }
 
-func detectDefaults() vars.Meta {
-	return g.
-		Default("akash-path", "../akash").
-		Default("akash-root", "./data/client").
+func usage() {
+	fmt.Fprintf(os.Stderr, "Usage: %v <standalone|kube> [gestalt-options ...]\n")
+	os.Exit(1)
+}
+
+func prepareStandalone() (gestalt.Component, vars.Meta) {
+	defaults := detectDefaults().
 		Default("provider-root", "./data/provider").
 		Default("akashd-path", "../akashd").
 		Default("akashd-root", "./data/node").
 		Default("deployment-path", "./deployment.yml").
 		Default("provider-path", "./provider.yml")
+
+	return cmp.StandaloneSuite(), defaults
+
+}
+
+func prepareKube() (gestalt.Component, vars.Meta) {
+	defaults := detectDefaults().
+		Require("host-base").
+		Default("node-chart", "../_run/multi/akash-node").
+		Default("provider-chart", "../_run/multi/akash-provider")
+
+	return cmp.KubeSuite(), defaults
+}
+
+func detectDefaults() vars.Meta {
+	return g.
+		Default("akash-path", "../akash").
+		Default("akash-root", "./data/client")
 }

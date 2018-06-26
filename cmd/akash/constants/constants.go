@@ -5,6 +5,7 @@ const (
 	// should be for every command
 	FlagRootDir = "data"
 	FlagNode    = "node"
+	DefaultNode = "http://localhost:46657"
 
 	// all non-query commands / actual transactions
 	FlagNonce = "nonce"

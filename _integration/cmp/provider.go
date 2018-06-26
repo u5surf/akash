@@ -9,12 +9,12 @@ import (
 
 func providerCreate(root vars.Ref, key vars.Ref, paddr vars.Ref) gestalt.Component {
 
-	check := akash_(root, "query", "query", "provider", paddr.Var()).
+	check := akash_n_(root, "query", "query", "provider", paddr.Var()).
 		FN(js.Do(js.Str(paddr.Var(), "address")))
 
 	return g.Group("provider-create").
 		Run(
-			akash_(root, "create", "provider", "create", "{{provider-path}}", "-k", key.Name()).
+			akash_n_(root, "create", "provider", "create", "{{provider-path}}", "-k", key.Name()).
 				FN(g.Capture(paddr.Name())).
 				WithMeta(g.Export(paddr.Name()))).
 		Run(g.Retry(5).Run(check)).
@@ -23,7 +23,7 @@ func providerCreate(root vars.Ref, key vars.Ref, paddr vars.Ref) gestalt.Compone
 }
 
 func providerRun(root vars.Ref, key vars.Ref, paddr vars.Ref) gestalt.Component {
-	return akash_(root, "provider-run", "provider", "run", paddr.Var(), "-k", key.Name()).
+	return akash_n_(root, "provider-run", "provider", "run", paddr.Var(), "-k", key.Name()).
 		WithMeta(g.Require(paddr.Name()))
 }
 
