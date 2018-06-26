@@ -20,7 +20,7 @@ func StandaloneSuite() gestalt.Component {
 
 func KubeSuite() gestalt.Component {
 	key := newKey("master")
-	// daddr := g.Ref("deployment-id")
+	daddr := g.Ref("deployment-id")
 
 	genAkashNode := g.FN("generate-node-host", func(e gestalt.Evaluator) error {
 		host := vars.Expand(e.Vars(), "{{node-hostname}}.{{host-base}}:80")
@@ -32,5 +32,6 @@ func KubeSuite() gestalt.Component {
 		Run(genAkashNode).
 		Run(kubeInstall()).
 		Run(keyGetAddress(key)).
-		Run(groupAccountSend(key))
+		Run(groupAccountSend(key)).
+		Run(groupDeploy(key.name, daddr))
 }
