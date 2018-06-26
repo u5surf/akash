@@ -16,8 +16,7 @@ helm-reset-nodes:   helm-delete-nodes helm-install-nodes
 DOMAIN ?= $(shell minikube ip).nip.io
 
 helm-install-node-%:
-	helm install "$(NODE_CHART)"        \
-		-n "$(@:helm-install-node-%=%)"   \
+	helm upgrade -i "$(@:helm-install-node-%=%)" "$(NODE_CHART)" \
 		--set "ingress.domain=$(DOMAIN)"  \
 		-f "$(NODE_ROOT)/$(@:helm-install-node-%=%).yaml"
 
@@ -41,8 +40,7 @@ helm-delete-providers:  $(patsubst %,helm-delete-provider-%,$(PROVIDERS))
 helm-reset-providers:   helm-delete-providers helm-install-providers
 
 helm-install-provider-%:
-	helm install "$(PROVIDER_CHART)"      \
-		-n "$(@:helm-install-provider-%=%)" \
+	helm upgrade -i "$(@:helm-install-provider-%=%)" "$(PROVIDER_CHART)" \
 		--set "ingress.domain=$(DOMAIN)"    \
 		--set "provider.region=$(shell echo "$@" | sed -e 's/.*-\(.*-.*\)-[0-9][0-9]*/\1/')"
 
@@ -57,3 +55,16 @@ helm-delete-provider-%:
 
 helm-check-provider-%:
 	curl "$(@:helm-check-provider-%=%).$(DOMAIN)"
+
+init-base:
+	helm init
+	kubectl create -f ./rbac.yml || true
+	./run.sh init
+
+install-all: \
+	init-base image-minikube \
+	helm-install-nodes helm-install-providers
+
+install-all-baremetal: \
+	init-base \
+	helm-install-nodes helm-install-providers

@@ -44,7 +44,8 @@ func prepareStandalone() (gestalt.Component, vars.Meta) {
 		Default("akashd-path", "../akashd").
 		Default("akashd-root", "./data/node").
 		Default("deployment-path", "./deployment.yml").
-		Default("provider-path", "./provider.yml")
+		Default("provider-path", "./provider.yml").
+		Default("akash-root", "./data/client")
 
 	return cmp.StandaloneSuite(), defaults
 
@@ -53,14 +54,13 @@ func prepareStandalone() (gestalt.Component, vars.Meta) {
 func prepareKube() (gestalt.Component, vars.Meta) {
 	defaults := detectDefaults().
 		Require("host-base").
-		Default("node-chart", "../_run/multi/akash-node").
-		Default("provider-chart", "../_run/multi/akash-provider")
+		Default("run-dir", "../_run/multi").
+		Default("akash-root", "../_run/multi/data/client")
 
 	return cmp.KubeSuite(), defaults
 }
 
 func detectDefaults() vars.Meta {
 	return g.
-		Default("akash-path", "../akash").
-		Default("akash-root", "./data/client")
+		Default("akash-path", "../akash")
 }

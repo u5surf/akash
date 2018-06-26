@@ -2,6 +2,8 @@ BINARY := run
 
 DIRS := data/client data/provider
 
+DOMAIN ?= $(shell minikube ip).nip.io
+
 build:
 	go build -o $(BINARY) .
 
@@ -13,6 +15,14 @@ run: build init
 
 akash:
 	(cd .. && make)
+
+kube-init:
+	( cd ../_run/multi && DOMAIN="$(DOMAIN)" make install-all )
+
+kube-run: build
+	./run kube eval -s host-base="$(DOMAIN)"
+
+kube-init-run: kube-init kube-run
 
 deps-install:
 	go get github.com/buger/jsonparser

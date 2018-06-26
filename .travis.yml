@@ -82,6 +82,7 @@ jobs:
         - sudo apt-get install -yq systemd
         - .travis/integration-setup.sh
         - make akash image
+        - .travis/integration-run.sh
         # - make integrationdeps-install
         # - make test-integration
 
