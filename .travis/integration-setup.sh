@@ -30,8 +30,9 @@ boot(){
   sudo ./pupernetes wait --wait-timeout 5m
 
   # initialize helm
-  helm init
+  helm init --wait
 
+  # install necessary objects
   kubectl create -f "$(dirname $0)/../_run/multi/rbac.yml"
   kubectl create -f "$(dirname $0)/ingress.yml"
 }

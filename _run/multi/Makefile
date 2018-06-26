@@ -57,7 +57,7 @@ helm-check-provider-%:
 	curl "$(@:helm-check-provider-%=%).$(DOMAIN)"
 
 init-base:
-	helm init
+	helm init --wait
 	kubectl create -f ./rbac.yml || true
 	./run.sh init
 

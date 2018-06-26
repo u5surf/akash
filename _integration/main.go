@@ -54,6 +54,7 @@ func prepareStandalone() (gestalt.Component, vars.Meta) {
 func prepareKube() (gestalt.Component, vars.Meta) {
 	defaults := detectDefaults().
 		Require("host-base").
+		Default("node-hostname", "node-0").
 		Default("run-dir", "../_run/multi").
 		Default("akash-root", "../_run/multi/data/client")
 

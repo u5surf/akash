@@ -34,7 +34,7 @@ func keyGetAddress(key key) gestalt.Component {
 
 	return akash("key-list", "key", "list").
 		FN(parse).
-		WithMeta(g.Require(key.name.Name()).Export(key.addr.Name()))
+		WithMeta(g.Export(key.addr.Name()))
 }
 
 func groupKey(key key) gestalt.Component {
