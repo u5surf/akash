@@ -80,8 +80,8 @@ jobs:
       dist: trusty
       script:
         - sudo apt-get install -yq systemd
+        - make akash image integrationdeps-install
         - .travis/integration-setup.sh
-        - make akash image
         - .travis/integration-run.sh
         # - make integrationdeps-install
         # - make test-integration
