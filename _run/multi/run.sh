@@ -1,7 +1,7 @@
 #!/bin/sh
 # vim: ts=2 sts=2 sw=2 et
 
-source ./env.sh
+. ./env.sh
 
 do_init(){
   rm -rf "$DATA_ROOT"

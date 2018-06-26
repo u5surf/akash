@@ -18,10 +18,11 @@ func StandaloneSuite() gestalt.Component {
 }
 
 func KubeSuite() gestalt.Component {
-	// key := newKey("master")
+	key := newKey("master")
 	// daddr := g.Ref("deployment-id")
 
 	return g.Suite("main").
-		Run(kubeInstall())
+		Run(kubeInstall()).
+		Run(keyGetAddress(key))
 	// Run(groupAccountSend(key))
 }

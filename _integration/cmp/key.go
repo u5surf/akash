@@ -26,6 +26,17 @@ func keyList(root vars.Ref, key key) gestalt.Component {
 		WithMeta(g.Require(key.addr.Name()))
 }
 
+func keyGetAddress(key key) gestalt.Component {
+	parse := gx.ParseColumns("name", key.addr.Name()).
+		GrepField("name", key.name.Name()).
+		EnsureCount(1).
+		Capture("_", key.addr.Name())
+
+	return akash("key-list", "key", "list").
+		FN(parse).
+		WithMeta(g.Require(key.name.Name()).Export(key.addr.Name()))
+}
+
 func groupKey(key key) gestalt.Component {
 	return groupKey_(defaultAkashRoot, key)
 }
