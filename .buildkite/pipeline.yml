@@ -1,5 +1,6 @@
 env:
   BUILDKTE_GOLANG_IMPORT_PATH: "github.com/ovrclk/akash"
+  TEST_DELAY_THREAD_START: 10ms
 steps:
   - name: ":golang:"
     plugins:
@@ -12,5 +13,5 @@ steps:
       - make build
       - make test-vet
       - make test
-      - make integrationdeps-install
-      - make test-integration
+      # - make integrationdeps-install
+      # - make test-integration
