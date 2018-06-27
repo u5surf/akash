@@ -2,10 +2,10 @@ env:
   BUILDKTE_GOLANG_IMPORT_PATH: "github.com/ovrclk/akash"
 steps:
   - name: ":golang:"
-    # plugins:
-    #   golang#v2.0.0:
-    #     version: "1.10"
-    #     import: "${BUILDKITE_GOLANG_IMPORT_PATH}"
+    plugins:
+      golang#v2.0.0:
+        version: "1.10"
+        import: github.com/ovrclk/akash
     command: 
       - curl https://glide.sh/get | sh
       - make deps-install
