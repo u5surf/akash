@@ -82,6 +82,7 @@ jobs:
         - sudo apt-get update
         - sudo apt-get install -yq systemd util-linux
         - make bins image integrationdeps-install
+        - .travis/install-nsenter.sh
         - .travis/integration-setup.sh
         - .travis/integration-run.sh
         # - make integrationdeps-install
