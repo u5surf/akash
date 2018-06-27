@@ -1,3 +1,5 @@
+env:
+  BUILDKTE_GOLANG_IMPORT_PATH: "github.com/ovrclk/akash"
 steps:
   - name: ":golang:"
     plugins:
@@ -8,4 +10,3 @@ steps:
       - curl https://glide.sh/get | sh
       - make deps-install
       - make build
-
