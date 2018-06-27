@@ -12,3 +12,5 @@ steps:
       - make build
       - make test-vet
       - make test
+      - make integrationdeps-install
+      - make test-integration
