@@ -10,7 +10,7 @@ import (
 func kubeCheckNodes() gestalt.Component {
 	return g.Group("kube-check-nodes").
 		Run(
-			g.Retry(10).Run(
+			g.Retry(30).Run(
 				g.SH("check", "make", "helm-check-nodes").
 					Dir("{{run-dir}}").
 					AddEnv("DOMAIN", "{{host-base}}").
@@ -22,7 +22,7 @@ func kubeCheckNodes() gestalt.Component {
 func kubeCheckProviders() gestalt.Component {
 	return g.Group("kube-check-providers").
 		Run(
-			g.Retry(10).Run(
+			g.Retry(30).Run(
 				g.SH("check", "make", "helm-check-providers").
 					Dir("{{run-dir}}").
 					AddEnv("DOMAIN", "{{host-base}}").

@@ -4,6 +4,7 @@ import (
 	"github.com/ovrclk/akash/types"
 	"github.com/ovrclk/gestalt"
 	g "github.com/ovrclk/gestalt/builder"
+	"github.com/ovrclk/gestalt/component"
 	"github.com/ovrclk/gestalt/exec/js"
 	"github.com/ovrclk/gestalt/vars"
 )
@@ -67,8 +68,9 @@ func leaseQuery(daddr vars.Ref) gestalt.Component {
 		WithMeta(g.Require(daddr.Name()))
 }
 
-func groupDeploy(key vars.Ref, daddr vars.Ref) gestalt.Component {
-	return g.Group("deployment").
+func groupDeploy(key vars.Ref, daddr vars.Ref) component.Ensure {
+
+	create := g.Group("create").
 		Run(deployCreate(key, daddr)).
 		Run(g.Retry(5).
 			Run(orderQuery(daddr))).
@@ -76,4 +78,12 @@ func groupDeploy(key vars.Ref, daddr vars.Ref) gestalt.Component {
 			Run(leaseQuery(daddr))).
 		Run(deployClose(key, daddr)).
 		WithMeta(g.Export(daddr.Name()))
+
+	cmp := g.Ensure("deployment").
+		First(create).
+		Finally(deployClose(key, daddr))
+
+	cmp.WithMeta(g.Export(daddr.Name()))
+
+	return cmp
 }
