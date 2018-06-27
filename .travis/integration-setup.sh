@@ -33,6 +33,7 @@ boot(){
   helm init --wait
 
   # install necessary objects
+  kubectl create -f "$(dirname $0)/rbac.yml"
   kubectl create -f "$(dirname $0)/../_run/multi/rbac.yml"
   kubectl create -f "$(dirname $0)/ingress.yml"
 }

@@ -80,7 +80,7 @@ jobs:
       dist: trusty
       script:
         - sudo apt-get update
-        - sudo apt-get install -yq systemd util-linux
+        - sudo apt-get install -yq systemd
         - make bins image integrationdeps-install
         - .travis/install-nsenter.sh
         - .travis/integration-setup.sh
