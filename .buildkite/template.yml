@@ -1,6 +1,8 @@
 ---
 name: Akash Build
 repository: https://github.com/ovrclk/akash.git
+env:
+  BUILDKTE_GOLANG_IMPORT_PATH: "github.com/ovrclk/akash"
 steps:
   - name: ":pipeline:"
     command: "buildkite-agent pipeline upload"
