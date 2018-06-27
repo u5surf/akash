@@ -1,0 +1,30 @@
+---
+services:
+  web:
+    image: quay.io/ovrclk/demo-app
+    expose:
+      - port: 80
+        as: 80
+        accept:
+          - hello.DOMAIN
+        to:
+          - global: true
+
+profiles:
+  compute:
+    web:
+      cpu: 1
+      memory: 512
+      disk: 5
+  placement:
+    westcoast:
+      attributes:
+        region: us-west
+      pricing:
+        web: 100
+
+deployment:
+  web:
+    westcoast:
+      profile: web
+      count: 2

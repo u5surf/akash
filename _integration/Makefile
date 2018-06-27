@@ -10,7 +10,7 @@ build:
 init:
 	mkdir -p $(DIRS)
 
-run: build init
+run: build init gen-deployment
 	./run standalone eval
 
 akash:
@@ -19,10 +19,13 @@ akash:
 kube-init:
 	( cd ../_run/multi && DOMAIN="$(DOMAIN)" make install-all )
 
-kube-run: build
+kube-run: build gen-deployment
 	./run kube eval -s host-base="$(DOMAIN)"
 
 kube-init-run: kube-init kube-run
+
+gen-deployment:
+	sed -e 's/DOMAIN/$(DOMAIN)/g' < deployment.yml.tmpl > deployment.yml
 
 deps-install:
 	go get github.com/buger/jsonparser
@@ -35,5 +38,7 @@ reset: clean init build akash
 rerun: reset run
 
 .PHONY: build init run \
+	kube-init kube-run kube-init-run \
+	gen-deployment \
 	akash deps-install \
 	clean reset rerun

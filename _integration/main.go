@@ -43,7 +43,6 @@ func prepareStandalone() (gestalt.Component, vars.Meta) {
 		Default("provider-root", "./data/provider").
 		Default("akashd-path", "../akashd").
 		Default("akashd-root", "./data/node").
-		Default("deployment-path", "./deployment.yml").
 		Default("provider-path", "./provider.yml").
 		Default("akash-root", "./data/client")
 
@@ -63,5 +62,6 @@ func prepareKube() (gestalt.Component, vars.Meta) {
 
 func detectDefaults() vars.Meta {
 	return g.
-		Default("akash-path", "../akash")
+		Default("akash-path", "../akash").
+		Default("deployment-path", "./deployment.yml")
 }
