@@ -2,11 +2,15 @@ env:
   BUILDKTE_GOLANG_IMPORT_PATH: "github.com/ovrclk/akash"
   TEST_DELAY_THREAD_START: 10ms
 steps:
-  - name: whatever
+  - name: env
     command:
       - env
+  - name: whoami
+    command:
+      - whoami
+  - name: id
+    command:
       - id
-      - echo $PATH
   - name: ":golang:"
     plugins:
       golang#v2.0.0:
