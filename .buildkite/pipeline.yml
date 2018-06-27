@@ -10,3 +10,5 @@ steps:
       - curl https://glide.sh/get | sh
       - make deps-install
       - make build
+      - make test-vet
+      - make test
