@@ -5,6 +5,8 @@ steps:
   - name: whatever
     command:
       - env
+      - id
+      - echo $PATH
   - name: ":golang:"
     plugins:
       golang#v2.0.0:
