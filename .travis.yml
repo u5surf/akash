@@ -12,28 +12,6 @@ env:
 jobs:
   include:
 
-    # linux/1.9: collect & submit test coverage
-    - name: test
-      os: linux
-      go: 1.9
-      script:
-        - make build
-        - make test-vet
-        - make coverdeps-install
-        - make test-cover
-
-    # linux/1.10 (mainline): tests, integration, image-bins
-    - name: test
-      os: linux
-      go: "1.10"
-      script:
-        - make build
-        - make test-vet
-        - make test
-        - make integrationdeps-install
-        - make test-integration
-        - make image-bins
-
     # linux/1.10 (mainline): print linting errors
     - name: test-lint
       os: linux
