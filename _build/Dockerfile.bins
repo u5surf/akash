@@ -1,0 +1,4 @@
+FROM akash-base
+
+RUN set -eu; \
+    make bins

@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  base:
+    build:
+      context: .
+      dockerfile: _build/Dockerfile.base
+    image: akash-base
+  base-bins:
+    build:
+      context: .
+      dockerfile: _build/Dockerfile.bins
+    image: akash-base-bins
+  base-integration:
+    build:
+      context: .
+      dockerfile: _build/Dockerfile.integration-base
+    image: akash-base-integration

@@ -1,0 +1,8 @@
+FROM akash-base-bins
+
+ENV AKASH_DIR  /akash
+ENV AKASHD_DIR /akashd
+
+RUN set -eu; \
+    ./akash key create master > master.key; \
+    ./akashd init $(cat master.key)
