@@ -26,7 +26,7 @@ helm-upgrade-node-%:
 		-f "$(NODE_ROOT)/$(@:helm-upgrade-node-%=%).yaml"
 
 helm-check-node-%:
-	curl -f "$(@:helm-check-node-%=%).$(shell minikube ip).nip.io/status"
+	curl -sf "$(@:helm-check-node-%=%).$(shell minikube ip).nip.io/status"
 	@echo
 
 helm-delete-node-%:
@@ -54,5 +54,5 @@ helm-delete-provider-%:
 	helm delete "$(@:helm-delete-provider-%=%)" --purge
 
 helm-check-provider-%:
-	curl -f "$(@:helm-check-provider-%=%).$(shell minikube ip).nip.io/status"
+	curl -sf "$(@:helm-check-provider-%=%).$(shell minikube ip).nip.io/status"
 	@echo
