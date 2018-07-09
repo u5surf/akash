@@ -7,7 +7,7 @@ load util
     skip "minikube already running"
   fi
 
-  minikube start --cpus 4 --memory 4096
+  minikube start --cpus "${CPU:-4}" --memory "${MEMORY:-4096}"
 
   for count in {0..4}; do
     run minikube status
