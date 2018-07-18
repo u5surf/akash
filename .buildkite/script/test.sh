@@ -25,9 +25,18 @@ do_lint(){
   make lintdeps-install
 
   echo "--- :mag: linting"
-  make test-lint || {
+  if golangci-lint run --out-format tab > lint.out; then
+    style=success
+  else
     echo "--- :rotating_light: excessive lint errors"
-  }
+    style=warning
+  fi
+
+  (
+    echo '| Source | Linter | Message |'
+    echo '| ------ | ------ | ------- |'
+    awk '{ printf("%s | %s | ",$1,$2); $1=""; $2=""; print}' lint.out
+  ) | buildkite-agent annotate --style "$style" --context "lint"
 }
 
 do_tests(){
