@@ -62,12 +62,7 @@ func newDeploymentManager(s *service, lease types.LeaseID, mgroup *types.Manifes
 	}
 
 	go dm.lc.WatchChannel(s.lc.ShuttingDown())
-	go dm.run()
-
-	go func() {
-		<-dm.lc.Done()
-		s.managerch <- dm
-	}()
+	go dm.run(s.managerch)
 
 	return dm
 }
@@ -90,8 +85,9 @@ func (dm *deploymentManager) teardown() error {
 	}
 }
 
-func (dm *deploymentManager) run() {
+func (dm *deploymentManager) run(donech chan<- *deploymentManager) {
 	defer dm.lc.ShutdownCompleted()
+	defer func() { donech <- dm }()
 
 	runch := dm.startDeploy()
 
