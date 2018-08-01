@@ -32,7 +32,7 @@ func validateResourceListPricing(config config, rlist types.ResourceList) error 
 
 func validateResourceGroupPricing(config config, rg types.ResourceGroup) error {
 	if rg.Price > uint64(config.MaxUnitPrice) || rg.Price < uint64(config.MinUnitPrice) {
-		return fmt.Errorf("error: invalid unit price (%v > %v > %v fails)",
+		return fmt.Errorf("error: invalid unit price (%v >= %v >= %v fails)",
 			config.MaxUnitPrice, rg.Price, config.MinUnitPrice)
 	}
 	return nil

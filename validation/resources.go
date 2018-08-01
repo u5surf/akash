@@ -17,7 +17,7 @@ func validateResourceLists(config config, rlists []types.ResourceList) error {
 	}
 
 	if count := len(rlists); count > config.MaxGroupCount {
-		return fmt.Errorf("error: too many groups (%v > %v)", count, config.MaxGroupCount)
+		return fmt.Errorf("error: too many groups (%v >= %v fails)", config.MaxGroupCount, count)
 	}
 
 	names := make(map[string]bool)
@@ -44,8 +44,8 @@ func validateResourceList(config config, rlist types.ResourceList) error {
 	units := rlist.GetResources()
 
 	if count := len(units); count > config.MaxGroupUnits {
-		return fmt.Errorf("group %v: too many units (%v > %v)",
-			rlist.GetName(), count, config.MaxGroupUnits)
+		return fmt.Errorf("group %v: too many units (%v >= %v fails)",
+			rlist.GetName(), config.MaxGroupUnits, count)
 	}
 
 	var (
@@ -64,17 +64,17 @@ func validateResourceList(config config, rlist types.ResourceList) error {
 	}
 
 	if cpu > config.MaxGroupCPU || cpu <= 0 {
-		return fmt.Errorf("group %v: invalid total cpu (%v > %v > %v fails)",
+		return fmt.Errorf("group %v: invalid total cpu (%v >= %v > %v fails)",
 			rlist.GetName(), config.MaxGroupCPU, cpu, 0)
 	}
 
 	if mem > config.MaxGroupMemory || mem <= 0 {
-		return fmt.Errorf("group %v: invalid total memory (%v > %v > %v fails)",
+		return fmt.Errorf("group %v: invalid total memory (%v >= %v > %v fails)",
 			rlist.GetName(), config.MaxGroupMemory, mem, 0)
 	}
 
 	if disk > config.MaxGroupDisk || disk <= 0 {
-		return fmt.Errorf("group %v: invalid total disk (%v > %v > %v fails)",
+		return fmt.Errorf("group %v: invalid total disk (%v >= %v > %v fails)",
 			rlist.GetName(), config.MaxGroupDisk, disk, 0)
 	}
 
@@ -86,7 +86,7 @@ func validateResourceGroup(config config, rg types.ResourceGroup) error {
 		return nil
 	}
 	if rg.Count > uint32(config.MaxUnitCount) || rg.Count < uint32(config.MinUnitCount) {
-		return fmt.Errorf("error: invalid unit count (%v > %v > %v fails)",
+		return fmt.Errorf("error: invalid unit count (%v >= %v > %v fails)",
 			config.MaxUnitCount, rg.Count, config.MinUnitCount)
 	}
 	return nil
@@ -94,15 +94,15 @@ func validateResourceGroup(config config, rg types.ResourceGroup) error {
 
 func validateResourceUnit(config config, unit types.ResourceUnit) error {
 	if unit.CPU > uint32(config.MaxUnitCPU) || unit.CPU < uint32(config.MinUnitCPU) {
-		return fmt.Errorf("error: invalide unit cpu (%v > %v > %v fails)",
+		return fmt.Errorf("error: invalid unit cpu (%v >= %v >= %v fails)",
 			config.MaxUnitCPU, unit.CPU, config.MinUnitCPU)
 	}
 	if unit.Memory > uint64(config.MaxUnitMemory) || unit.Memory < uint64(config.MinUnitMemory) {
-		return fmt.Errorf("error: invalid unit memory (%v > %v > %v fails)",
+		return fmt.Errorf("error: invalid unit memory (%v >= %v >= %v fails)",
 			config.MaxUnitMemory, unit.Memory, config.MinUnitMemory)
 	}
 	if unit.Disk > uint64(config.MaxUnitDisk) || unit.Disk < uint64(config.MinUnitDisk) {
-		return fmt.Errorf("error: invalid unit disk (%v > %v > %v fails)",
+		return fmt.Errorf("error: invalid unit disk (%v >= %v >= %v fails)",
 			config.MaxUnitDisk, unit.Disk, config.MinUnitDisk)
 	}
 	return nil
