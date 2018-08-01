@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	akashv1 "github.com/ovrclk/akash/pkg/apis/akash.network/v1"
 	"github.com/ovrclk/akash/types"
@@ -19,9 +20,10 @@ import (
 )
 
 const (
-	akashManagedLabelName = "akash.network"
-
+	akashManagedLabelName         = "akash.network"
 	akashManifestServiceLabelName = "akash.network/manifest-service"
+
+	akashUpdatedAtAnnName = "akash.network/updated-at"
 )
 
 type builder struct {
@@ -36,6 +38,12 @@ func (b *builder) ns() string {
 func (b *builder) labels() map[string]string {
 	return map[string]string{
 		akashManagedLabelName: "true",
+	}
+}
+
+func (b *builder) annotations() map[string]string {
+	return map[string]string{
+		akashUpdatedAtAnnName: strconv.FormatUint(uint64(time.Now().Unix()), 10),
 	}
 }
 
@@ -54,8 +62,9 @@ func (b *nsBuilder) name() string {
 func (b *nsBuilder) create() (*corev1.Namespace, error) {
 	return &corev1.Namespace{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:   b.ns(),
-			Labels: b.labels(),
+			Name:        b.ns(),
+			Labels:      b.labels(),
+			Annotations: b.annotations(),
 		},
 	}, nil
 }
@@ -63,6 +72,7 @@ func (b *nsBuilder) create() (*corev1.Namespace, error) {
 func (b *nsBuilder) update(obj *corev1.Namespace) (*corev1.Namespace, error) {
 	obj.Name = b.ns()
 	obj.Labels = b.labels()
+	obj.Annotations = b.annotations()
 	return obj, nil
 }
 
@@ -91,8 +101,9 @@ func (b *deploymentBuilder) create() (*appsv1.Deployment, error) {
 
 	kdeployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:   b.name(),
-			Labels: b.labels(),
+			Name:        b.name(),
+			Labels:      b.labels(),
+			Annotations: b.annotations(),
 		},
 		Spec: appsv1.DeploymentSpec{
 			Selector: &metav1.LabelSelector{
@@ -101,7 +112,8 @@ func (b *deploymentBuilder) create() (*appsv1.Deployment, error) {
 			Replicas: &replicas,
 			Template: corev1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
-					Labels: b.labels(),
+					Labels:      b.labels(),
+					Annotations: b.annotations(),
 				},
 				Spec: corev1.PodSpec{
 					Containers: []corev1.Container{b.container()},
@@ -117,9 +129,11 @@ func (b *deploymentBuilder) update(obj *appsv1.Deployment) (*appsv1.Deployment, 
 	replicas := int32(b.service.Count)
 
 	obj.Labels = b.labels()
+	obj.Annotations = b.annotations()
 	obj.Spec.Selector.MatchLabels = b.labels()
 	obj.Spec.Replicas = &replicas
 	obj.Spec.Template.Labels = b.labels()
+	obj.Spec.Template.Annotations = b.annotations()
 	obj.Spec.Template.Spec.Containers = []corev1.Container{b.container()}
 	return obj, nil
 }
@@ -179,8 +193,9 @@ func newServiceBuilder(lid types.LeaseID, group *types.ManifestGroup, service *t
 func (b *serviceBuilder) create() (*corev1.Service, error) {
 	return &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:   b.name(),
-			Labels: b.labels(),
+			Name:        b.name(),
+			Labels:      b.labels(),
+			Annotations: b.annotations(),
 		},
 		Spec: corev1.ServiceSpec{
 			Selector: b.labels(),
@@ -191,6 +206,7 @@ func (b *serviceBuilder) create() (*corev1.Service, error) {
 
 func (b *serviceBuilder) update(obj *corev1.Service) (*corev1.Service, error) {
 	obj.Labels = b.labels()
+	obj.Annotations = b.annotations()
 	obj.Spec.Selector = b.labels()
 	obj.Spec.Ports = b.ports()
 	return obj, nil
@@ -226,8 +242,9 @@ func newIngressBuilder(host string, lid types.LeaseID, group *types.ManifestGrou
 func (b *ingressBuilder) create() (*extv1.Ingress, error) {
 	return &extv1.Ingress{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:   b.name(),
-			Labels: b.labels(),
+			Name:        b.name(),
+			Labels:      b.labels(),
+			Annotations: b.annotations(),
 		},
 		Spec: extv1.IngressSpec{
 			Backend: &extv1.IngressBackend{
@@ -241,6 +258,7 @@ func (b *ingressBuilder) create() (*extv1.Ingress, error) {
 
 func (b *ingressBuilder) update(obj *extv1.Ingress) (*extv1.Ingress, error) {
 	obj.Labels = b.labels()
+	obj.Annotations = b.annotations()
 	obj.Spec.Backend.ServicePort = intstr.FromInt(int(exposeExternalPort(b.expose)))
 	obj.Spec.Rules = b.rules()
 	return obj, nil
