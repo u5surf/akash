@@ -112,7 +112,7 @@ func (a *app) doQuery(state appstate.State, key keys.Order) abci_types.ResponseQ
 
 	return abci_types.ResponseQuery{
 		Value:  bytes,
-		Height: int64(state.Version()),
+		Height: state.Version(),
 	}
 }
 

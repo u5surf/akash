@@ -156,20 +156,20 @@ func TestLeaseTransfer(t *testing.T) {
 
 	pacct, err = commitState.Account().Get(addrto)
 	require.NoError(t, err)
-	assert.Equal(t, uint64(lease.Price), pacct.Balance)
+	assert.Equal(t, lease.Price, pacct.Balance)
 
 	tacct, err = commitState.Account().Get(addrfrom)
 	require.NoError(t, err)
-	assert.Equal(t, uint64(balance-lease.Price), tacct.Balance)
+	assert.Equal(t, balance-lease.Price, tacct.Balance)
 
 	app.Commit()
 
 	pacct, err = commitState.Account().Get(addrto)
 	require.NoError(t, err)
-	assert.Equal(t, uint64(lease.Price)*2, pacct.Balance)
+	assert.Equal(t, lease.Price*2, pacct.Balance)
 
 	tacct, err = commitState.Account().Get(addrfrom)
 	require.NoError(t, err)
-	assert.Equal(t, uint64(balance-lease.Price*2), tacct.Balance)
+	assert.Equal(t, balance-lease.Price*2, tacct.Balance)
 
 }

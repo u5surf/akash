@@ -148,7 +148,7 @@ func TestBilling(t *testing.T) {
 	oSeq := uint64(0)
 	testutil.CreateOrder(t, cacheState, oapp, tenant, tkey, daddress, groupSeq, oSeq)
 	price := uint64(1)
-	p := uint64(price)
+	p := price
 
 	// create fulfillment
 	fapp, err := fapp.NewApp(testutil.Logger())

@@ -18,7 +18,7 @@ func (prov *Provider) Parse(file string) error {
 		return err
 	}
 
-	err = yaml.Unmarshal([]byte(contents), prov)
+	err = yaml.Unmarshal(contents, prov)
 	if err != nil {
 		return err
 	}

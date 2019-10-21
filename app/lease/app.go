@@ -516,7 +516,7 @@ func processLease(state appstate.State, lease types.Lease) error {
 		return errors.New("owner not found")
 	}
 
-	p := uint64(lease.Price)
+	p := lease.Price
 
 	if tenant.Balance >= p {
 		owner.Balance += p
