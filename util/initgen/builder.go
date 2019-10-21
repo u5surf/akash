@@ -37,7 +37,6 @@ type builder struct {
 	names    []string
 	path     string
 	pgenesis *types.Genesis
-	type_    Type
 }
 
 // NewBuilder returns a new instance of the builder
@@ -96,19 +95,6 @@ func (b *builder) Create() (Context, error) {
 	}
 
 	return NewContext(b.path, genesis, nodes...), nil
-}
-
-func (b *builder) generatePrivateValidators() []tmtypes.PrivValidator {
-
-	if len(b.names) == 0 {
-		return nil
-	}
-
-	validators := make([]tmtypes.PrivValidator, 0, len(b.names))
-	for i := 0; i < len(b.names); i++ {
-		validators = append(validators, privval.GenFilePV("", ""))
-	}
-	return validators
 }
 
 func (b *builder) generateFilePVKeys() []*privval.FilePV {

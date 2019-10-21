@@ -346,7 +346,3 @@ func logDone(log dsky.Logger, module, msg string) {
 func logWait(log dsky.Logger, module, msg string) {
 	log.WithAction(dsky.LogActionWait).WithModule(module).Warn(msg)
 }
-
-func logError(log dsky.Logger, module, msg string) {
-	log.WithAction(dsky.LogActionFail).WithModule(module).Error(msg)
-}

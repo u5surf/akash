@@ -60,11 +60,3 @@ func doQueryFulfillmentCommand(s session.Session, cmd *cobra.Command, args []str
 	}
 	return s.Mode().Printer().Flush()
 }
-
-func makePrinterResultFulfillment(f *types.Fulfillment) session.PrinterResult {
-	return session.PrinterResult{
-		"fulfillment": f.FulfillmentID.String(),
-		"price":       humanize.Comma(int64(f.Price)),
-		"state":       f.State.String(),
-	}
-}

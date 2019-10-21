@@ -11,7 +11,6 @@ import (
 	"github.com/ovrclk/akash/provider/session"
 	"github.com/ovrclk/akash/types"
 	"github.com/ovrclk/akash/types/base"
-	"github.com/ovrclk/akash/util/runner"
 	"github.com/ovrclk/akash/validation"
 )
 
@@ -83,8 +82,6 @@ type handler struct {
 
 	managers  map[string]*manager
 	managerch chan *manager
-
-	deploymentch chan runner.Result
 
 	lc lifecycle.Lifecycle
 }

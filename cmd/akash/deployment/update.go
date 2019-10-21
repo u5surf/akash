@@ -86,12 +86,3 @@ func updateDeployment(session session.Session, cmd *cobra.Command, args []string
 
 	return doSendManifest(session, signer, daddr.ID(), mani)
 }
-
-var updateWarnMsg = `warning: this command is experimental and limited; expect dragons.
-
-it is currently only possible to make small changes to your deployment.
-
-resources within a datacenter must remain the same.  you can change ports
-and images;add and remove services; etc... so long as the overall
-infrastructure requirements do not change.
-`

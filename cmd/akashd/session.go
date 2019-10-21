@@ -27,15 +27,6 @@ func withSession(fn sessionRunner) cmdRunner {
 	}
 }
 
-func requireRootDir(fn sessionRunner) sessionRunner {
-	return func(session Session, cmd *cobra.Command, args []string) error {
-		if root := session.RootDir(); root == "" {
-			return errors.New("root directory unset")
-		}
-		return fn(session, cmd, args)
-	}
-}
-
 type Session interface {
 	RootDir() string
 	TMConfig() (*tmconfig.Config, error)

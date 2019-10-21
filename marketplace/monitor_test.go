@@ -23,11 +23,6 @@ func getLocalClient(node *node.Node) *client.Local {
 	return client.NewLocal(node)
 }
 
-func getTestHTTPClient() *client.HTTP {
-	rpcAddr := rpctest.GetConfig().RPC.ListenAddress
-	return client.NewHTTP(rpcAddr, "/websocket")
-}
-
 func startTestServer(t *testing.T) *node.Node {
 	app := counter.NewCounterApplication(true)
 	node := rpctest.StartTendermint(app)

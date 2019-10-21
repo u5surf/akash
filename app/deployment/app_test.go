@@ -37,7 +37,6 @@ func TestAcceptQuery(t *testing.T) {
 }
 
 func TestCreateTx(t *testing.T) {
-	const groupseq = 1
 	_, cacheState := testutil.NewState(t, nil)
 	app, err := deployment.NewApp(testutil.Logger())
 	require.NoError(t, err)
@@ -119,7 +118,6 @@ func TestCreateTx(t *testing.T) {
 }
 
 func TestUpdateTx(t *testing.T) {
-	const groupseq = 1
 	_, cacheState := testutil.NewState(t, nil)
 	app, err := deployment.NewApp(testutil.Logger())
 	require.NoError(t, err)
