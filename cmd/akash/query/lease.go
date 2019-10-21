@@ -31,7 +31,7 @@ func doQueryLeaseCommand(s session.Session, cmd *cobra.Command, args []string) e
 	}
 
 	switch {
-	case hasSigner == false && hasIDs == false:
+	case !hasSigner && !hasIDs:
 		var id string
 		id = s.Mode().Ask().StringVar(id, "Lease ID (required): ", true)
 		if len(id) == 0 {

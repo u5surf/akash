@@ -103,12 +103,7 @@ func (id FulfillmentID) Compare(that interface{}) int {
 }
 
 func (id FulfillmentID) LeaseID() LeaseID {
-	return LeaseID{
-		Deployment: id.Deployment,
-		Group:      id.Group,
-		Order:      id.Order,
-		Provider:   id.Provider,
-	}
+	return LeaseID(id)
 }
 
 func (id FulfillmentID) OrderID() OrderID {
@@ -151,12 +146,7 @@ func (id LeaseID) Equal(that interface{}) bool {
 }
 
 func (id LeaseID) FulfillmentID() FulfillmentID {
-	return FulfillmentID{
-		Deployment: id.Deployment,
-		Group:      id.Group,
-		Order:      id.Order,
-		Provider:   id.Provider,
-	}
+	return FulfillmentID(id)
 }
 
 func (id LeaseID) OrderID() OrderID {

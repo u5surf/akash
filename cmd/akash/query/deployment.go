@@ -25,14 +25,14 @@ func queryDeploymentCommand() *cobra.Command {
 func doQueryDeploymentCommand(s session.Session, cmd *cobra.Command, args []string) error {
 	var hasSigner, hasDepIDs bool
 	var depID string
-	deployments := make([]types.Deployment, 0, 0)
+	deployments := make([]types.Deployment, 0)
 	hasDepIDs = len(args) > 0
 	_, info, err := s.Signer()
 	if err == nil {
 		hasSigner = true
 	}
 	switch {
-	case hasSigner == false && hasDepIDs == false:
+	case !hasSigner && !hasDepIDs:
 		if err != nil && s.Mode().IsInteractive() {
 			var warn string
 			switch err.(type) {
@@ -68,9 +68,7 @@ func doQueryDeploymentCommand(s session.Session, cmd *cobra.Command, args []stri
 		if err != nil {
 			return err
 		}
-		for _, dep := range tdeps.Items {
-			deployments = append(deployments, dep)
-		}
+		deployments = append(deployments, tdeps.Items...)
 	}
 
 	data := s.Mode().Printer().NewSection("Deployment").WithLabel("Deployment(s)").NewData().WithTag("raw", deployments)

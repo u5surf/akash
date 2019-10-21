@@ -38,7 +38,7 @@ func NewPrinterDataKV() *PrinterData {
 
 func (d *PrinterData) AddResultKV(key, value string) *PrinterData {
 	if len(d.Result) == 0 {
-		d.Result = make([]map[string]string, 1, 1)
+		d.Result = make([]map[string]string, 1)
 	}
 
 	if d.Result[0] == nil {
@@ -51,7 +51,7 @@ func (d *PrinterData) AddResultKV(key, value string) *PrinterData {
 
 func (d *PrinterData) AddResultList(results ...PrinterResult) *PrinterData {
 	if len(d.Result) == 0 {
-		d.Result = make([]map[string]string, 0, 0)
+		d.Result = make([]map[string]string, 0)
 	}
 	for _, res := range results {
 		obj := make(map[string]string)

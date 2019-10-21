@@ -40,7 +40,7 @@ func doQueryAccountCommand(s session.Session, cmd *cobra.Command, args []string)
 	data := printer.NewSection("Account Query").NewData()
 
 	switch {
-	case hasSigner == false && hasPubKeys == false:
+	case !hasSigner && !hasPubKeys:
 		pubKey = mode.Ask().StringVar(pubKey, "Public Key (required): ", true)
 		if len(pubKey) == 0 {
 			return fmt.Errorf("required argument missing: name")
@@ -49,7 +49,7 @@ func doQueryAccountCommand(s session.Session, cmd *cobra.Command, args []string)
 		fallthrough
 	// When public keys are provided as args
 	case hasPubKeys:
-		raws := make([]interface{}, 0, 0)
+		raws := make([]interface{}, 0)
 		for _, arg := range args {
 			key, err := keys.ParseAccountPath(arg)
 			if err != nil {

@@ -574,15 +574,13 @@ func (a *app) doDeliverCloseTx(state appstate.State, ctx apptypes.Context, tx *t
 		}
 	}
 
-	if leases != nil {
-		for _, lease := range leases {
-			lease.State = types.Lease_CLOSED
-			err = state.Lease().Save(lease)
-			if err != nil {
-				return abci_types.ResponseDeliverTx{
-					Code: code.INVALID_TRANSACTION,
-					Log:  err.Error(),
-				}
+	for _, lease := range leases {
+		lease.State = types.Lease_CLOSED
+		err = state.Lease().Save(lease)
+		if err != nil {
+			return abci_types.ResponseDeliverTx{
+				Code: code.INVALID_TRANSACTION,
+				Log:  err.Error(),
 			}
 		}
 	}
